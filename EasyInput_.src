@@ -1,0 +1,18 @@
+	.SECTION P,CODE,ALIGN=4
+
+	.MACRO SYSCALL FUNO, SYSCALLNAME, TAIL=nop
+	.export \SYSCALLNAME'
+\SYSCALLNAME'
+	mov.l #h'\FUNO, r0
+	mov.l #H'80010070, r2
+	jmp @r2
+	\TAIL'
+	.ENDM
+
+	SYSCALL 0910,   _EI_KBD_PutKey
+	SYSCALL 0138,	_EI_Cursor_SetPosition
+	SYSCALL 0811,	_EI_Cursor_SetFlashOn
+	SYSCALL 0812,	_EI_Cursor_SetFlashOff
+	SYSCALL 080F,	_EI_Cursor_GetSettings
+
+	.end
