@@ -20,6 +20,9 @@ typedef unsigned short BOOL
 #define TRUE 1
 #define FALSE 0
 
+#define STR_MAX 255
+#define STR_BASE 3
+
 // ------------------------- Iterative functions to implement `itoa()` function in C ------------------------- 
 // Function to swap two numbers
 void swap(char *x, char *y) 
@@ -134,8 +137,8 @@ int ConvertTo10(const char* input, int base)
 void ConvertBase(const char* input, int baseFrom, int baseTo)
 {
     // NOTE: There is probably a more efficient way to convert between two bases.
-    //       This however is easy to understand and debug.
-    char* str = malloc(255);
+    // This however is easy to understand and debug.
+    char* str = malloc(STR_MAX);
     itoa(ConvertTo10(input, baseFrom), str, baseTo);
 
     locate(1,7);
@@ -153,10 +156,7 @@ void move(int x, int y)
 }
 
 int AddIn_main(int isAppli, unsigned short OptionNum)
-{
-    const int input_size = 255;
-    const int input_base_size = 3;
-    
+{   
     unsigned int key;
     char* str, *base_from, *base_to;
 
@@ -167,24 +167,24 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         EI_init();
         EI_manage_config(EI_SET_START_MODE, EI_NORMAL);
 
-        str = malloc(input_size);
-        base_from = malloc(input_base_size);
-        base_to = malloc(input_base_size);
+        str = malloc(STR_MAX);
+        base_from = malloc(STR_BASE);
+        base_to = malloc(STR_BASE);
         
         locate(1,1);
         Print((unsigned char*)"Input NB to convert:");
         move(1, 2);
-        str = EI_input_string(input_size, (const char*)"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        str = EI_input_string(STR_MAX, (const char*)"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         
         locate(1,3);
         Print((unsigned char*)"Input BaseFrom:");
         move(1,4);
-        base_from = EI_input_string(input_base_size, (const char*)"0123456789");
+        base_from = EI_input_string(STR_BASE, (const char*)"0123456789");
 
         locate(1,5);
         Print((unsigned char*)"Input BaseTo:");
         move(1,6);
-        base_to = EI_input_string(input_base_size, (const char*)"0123456789");
+        base_to = EI_input_string(STR_BASE, (const char*)"0123456789");
 
         ConvertBase(str, atoi(base_from), atoi(base_to));
 
@@ -201,7 +201,6 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
 
     return 1;
 }
-
 
 //****************************************************************************
 //**************                                              ****************
