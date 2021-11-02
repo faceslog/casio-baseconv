@@ -165,10 +165,13 @@ void ConvertBase(const char* input, int baseFrom, int baseTo, POS* displayPos)
     itoa(ConvertTo10(input, baseFrom), str, baseTo);
 
     move(displayPos, FALSE);
-    Print((unsigned char*)"Result:");
+    Print((unsigned char*)"[Result]");
 
     move(displayPos, FALSE);
-    Print(str);
+    if(strlen(str) > 21) // 21
+        Print((unsigned char*)"Too Long ...")
+    else
+        Print(str);
 
     free(str);
 }
