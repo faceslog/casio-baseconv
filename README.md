@@ -1,2 +1,2 @@
 # CasioBaseConverter
-Addins to convert number from a base to another for Calculator Casio 35/75 +E
+Addins to convert a number from a base to another on Casio Calculators 35/75 +E
