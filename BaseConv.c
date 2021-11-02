@@ -174,7 +174,7 @@ void ConvertBase(const char* input, int baseFrom, int baseTo, POS* displayPos)
 
 int AddIn_main(int isAppli, unsigned short OptionNum)
 {   
-    unsigned short key;
+    unsigned int key;
     char* str, *base_from, *base_to;
     POS pos;
 
@@ -192,9 +192,6 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         // Init Input Lib
         EI_init();
         EI_manage_config(EI_SET_START_MODE, EI_ALPHA);
-
-        move(&pos, FALSE);
-        Print((unsigned char*)"- faceslog.com -");
 
         move(&pos, FALSE);
         Print((unsigned char*)"Input NB to convert:");
