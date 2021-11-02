@@ -168,11 +168,13 @@ void ConvertBase(const char* input, int baseFrom, int baseTo, POS* displayPos)
     Print((unsigned char*)"[Result]");
 
     move(displayPos, FALSE);
-    if(strlen(str) > 21) // 21
-        Print((unsigned char*)"Too Long ...")
+    
+    // If the result is longer than the max screen size
+    if(strlen(str) > 21) 
+        Print((unsigned char*)"Too Long ...");       
     else
         Print(str);
-
+        
     free(str);
 }
 
