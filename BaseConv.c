@@ -120,7 +120,7 @@ int ConvertTo10(const char* input, int base)
 
     isNegative = (input[0] == '-');
 
-    startIndex = (int) strlen(input) - 1;
+    startIndex = strlen(input) - 1;
     endIndex   = isNegative ? TRUE : FALSE;
 
     value = 0;
@@ -166,6 +166,7 @@ void ConvertBase(const char* input, int baseFrom, int baseTo, POS* displayPos)
 
     move(displayPos, FALSE);
     Print((unsigned char*)"Result:");
+
     move(displayPos, FALSE);
     Print(str);
 
@@ -191,27 +192,27 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
 
         // Init Input Lib
         EI_init();
-        EI_manage_config(EI_SET_START_MODE, EI_ALPHA);
+        EI_manage_config(EI_SET_START_MODE, EI_NORMAL);
 
         move(&pos, FALSE);
-        Print((unsigned char*)"Input NB to convert:");
+        Print((unsigned char*)"[Input NB to convert]");
 
         move(&pos, TRUE);
         str = EI_input_string(STR_MAX, (const char*)"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
         move(&pos, FALSE);
-        Print((unsigned char*)"Input BaseFrom:");
+        Print((unsigned char*)"[Input BaseFrom]");
 
         move(&pos, TRUE);
         base_from = EI_input_string(STR_BASE, (const char*)"0123456789");
 
         move(&pos, FALSE);
-        Print((unsigned char*)"Input BaseTo:");
+        Print((unsigned char*)"[Input BaseTo]");
 
         move(&pos, TRUE);
         base_to = EI_input_string(STR_BASE, (const char*)"0123456789");
 
-        if(((int) strlen(str) > 0) && ((int) strlen(base_from) > 0) && ((int) strlen(base_to) > 0))
+        if((strlen(str) > 0) && (strlen(base_from) > 0) && (strlen(base_to) > 0))
         {
             ConvertBase(str, atoi(base_from), atoi(base_to), &pos);
         }
