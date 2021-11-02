@@ -85,32 +85,86 @@ char *EI_input_string(int string_length, const char *chars_allowed)
 					char_deleted = 1;
 				}
 				break;
-				
-			default:
-				// Give correct value to keys with a non-ascii return values
-				if(key == KEY_CHAR_PLUS) key = '+';
-				if(key == KEY_CHAR_MINUS || key == KEY_CHAR_PMINUS) key = '-';
-				if(key == KEY_CHAR_MULT) key = '*';
-				if(key == KEY_CHAR_DIV) key = '/';
-				if(key == KEY_CHAR_ANS) key = '_';
+			default: {
+                // Give correct value to keys
+                switch (key) {
+                    case KEY_CHAR_PLUS: key = '+';
+                        break;
+                    case KEY_CHAR_MINUS: key = '-';
+                        break;
+                    case KEY_CHAR_PMINUS: key = '-';
+                        break;
+                    case KEY_CHAR_MULT: key = '*';
+                        break;
+                    case KEY_CHAR_DIV: key = '/';
+                        break;
+                    case KEY_CHAR_ANS: key = '_';
+                        break;
+                    case KEY_CHAR_A: key = 'A';
+                        break;
+                    case KEY_CHAR_B: key = 'B';
+                        break;
+                    case KEY_CHAR_C: key = 'C';
+                        break;
+                    case KEY_CHAR_D: key = 'D';
+                        break;
+                    case KEY_CHAR_E: key = 'E';
+                        break;
+                    case KEY_CHAR_F: key = 'F';
+                        break;
+                    case KEY_CHAR_G: key = 'G';
+                        break;
+                    case KEY_CHAR_H: key = 'H';
+                        break;
+                    case KEY_CHAR_I: key = 'I';
+                        break;
+                    case KEY_CHAR_J: key = 'J';
+                        break;
+                    case KEY_CHAR_K: key = 'K';
+                        break;
+                    case KEY_CHAR_L: key = 'L';
+                        break;
+                    case KEY_CHAR_M: key = 'M';
+                        break;
+                    case KEY_CHAR_N: key = 'N';
+                        break;
+                    case KEY_CHAR_O: key = 'O';
+                        break;
+                    case KEY_CHAR_P: key = 'P';
+                        break;
+                    case KEY_CHAR_Q: key = 'Q';
+                        break;
+                    case KEY_CHAR_R: key = 'R';
+                        break;
+                    case KEY_CHAR_S: key = 'S';
+                        break;
+                    case KEY_CHAR_T: key = 'T';
+                        break;
+                    case KEY_CHAR_U: key = 'U';
+                        break;
+                    case KEY_CHAR_V: key = 'V';
+                        break;
+                    case KEY_CHAR_W: key = 'W';
+                        break;
+                    case KEY_CHAR_X: key = 'X';
+                        break;
+                    case KEY_CHAR_Y: key = 'Y';
+                        break;
+                    case KEY_CHAR_Z: key = 'Z';
+                        break;
+                }
 
-				if(key == KEY_CTRL_XTT) key = 'A';
-				if(key == KEY_CHAR_LOG) key = 'B';
-				if(key == KEY_CHAR_LN) key = 'C';
-				if(key == KEY_CHAR_SIN) key = 'D';
-				if(key == KEY_CHAR_COS) key = 'E';
-				if(key == KEY_CHAR_TAN) key = 'F';
-				
-				if(key > 127) // KEY_CTRL_***, etc.
-					break;
+                if(key > 127) // KEY_CTRL_***, etc.
+                    break;
 
-				if(key >= 'A' && key <= 'Z') key += !cap * 32; // Switch between caps
+                if(key >= 'A' && key <= 'Z') key += !cap * 32; // Switch between caps
 
-				if(EI_check_char(key, chars_allowed) && EI_str_length(string) != string_length) // Add char if we can
-				{
-					string[i] = key;
-					i++;
-				}
+                if(EI_check_char(key, chars_allowed) && EI_str_length(string) != string_length) // Add char if we can
+                {
+                    string[i] = key;
+                    i++;
+                }
+            }
 		}
 
 		switch(config->align) // Print string

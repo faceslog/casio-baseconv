@@ -15,13 +15,38 @@
 
 #include "EasyInput.h"
 
-typedef unsigned short BOOL
-
+// Could use an enum aswell, but since I often use the Microsoft BOOL Type I just recreated the same
+typedef unsigned short BOOL;
 #define TRUE 1
 #define FALSE 0
 
+// Manage the position of the cursor
+typedef struct
+{
+    unsigned short x;
+    unsigned short y;
+} POS;
+
+// String size to allocate
 #define STR_MAX 255
 #define STR_BASE 3
+
+// Move the cursor at the correct position
+void move(POS* pos, BOOL isInput)
+{
+    if(!isInput)
+    {
+        locate(pos->x, pos->y);
+    }
+    else
+    {
+        EI_manage_config(EI_SET_COLUMN, pos->x);
+        EI_manage_config(EI_SET_ROW, pos->y);
+    }
+
+    //pos->x++; disabled x since we don't need to use different column than 1 in this case, we could make x constant
+    pos->y++;
+}
 
 // ------------------------- Iterative functions to implement `itoa()` function in C ------------------------- 
 // Function to swap two numbers
@@ -105,11 +130,11 @@ int ConvertTo10(const char* input, int base)
     {
         c = input[i];
 
-        // Uppercase it - NOTE: could be done with std::toupper
+        // Uppercase it - same could be done with std::toupper
         if(c >= 'a' && c <= 'z')
             c -= ('a' - 'A');
 
-        // Convert char to int value - NOTE: could be done with std::atoi
+        // Convert char to int value - same could be done with std::atoi
         // 0-9
         if(c >= '0' && c <= '9')
             c -= '0';
@@ -134,59 +159,65 @@ int ConvertTo10(const char* input, int base)
 }
 
 // Convert from one base to another
-void ConvertBase(const char* input, int baseFrom, int baseTo)
+void ConvertBase(const char* input, int baseFrom, int baseTo, POS* displayPos)
 {
-    // NOTE: There is probably a more efficient way to convert between two bases.
-    // This however is easy to understand and debug.
     char* str = malloc(STR_MAX);
     itoa(ConvertTo10(input, baseFrom), str, baseTo);
 
-    locate(1,7);
+    move(displayPos, FALSE);
     Print((unsigned char*)"Result:");
-    locate(1,8);
+    move(displayPos, FALSE);
     Print(str);
 
     free(str);
 }
 
-void move(int x, int y)
-{
-    EI_manage_config(EI_SET_COLUMN, x);
-    EI_manage_config(EI_SET_ROW, y);
-}
-
 int AddIn_main(int isAppli, unsigned short OptionNum)
 {   
-    unsigned int key;
+    unsigned short key;
     char* str, *base_from, *base_to;
+    POS pos;
 
-    while(1)
+    while(TRUE)
     {
         Bdisp_AllClr_DDVRAM();
 
-        EI_init();
-        EI_manage_config(EI_SET_START_MODE, EI_NORMAL);
-
+        // Initialize variables
+        pos.x = 1;
+        pos.y = 1;
         str = malloc(STR_MAX);
         base_from = malloc(STR_BASE);
         base_to = malloc(STR_BASE);
-        
-        locate(1,1);
+
+        // Init Input Lib
+        EI_init();
+        EI_manage_config(EI_SET_START_MODE, EI_ALPHA);
+
+        move(&pos, FALSE);
+        Print((unsigned char*)"- faceslog.com -");
+
+        move(&pos, FALSE);
         Print((unsigned char*)"Input NB to convert:");
-        move(1, 2);
+
+        move(&pos, TRUE);
         str = EI_input_string(STR_MAX, (const char*)"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-        
-        locate(1,3);
+
+        move(&pos, FALSE);
         Print((unsigned char*)"Input BaseFrom:");
-        move(1,4);
+
+        move(&pos, TRUE);
         base_from = EI_input_string(STR_BASE, (const char*)"0123456789");
 
-        locate(1,5);
+        move(&pos, FALSE);
         Print((unsigned char*)"Input BaseTo:");
-        move(1,6);
+
+        move(&pos, TRUE);
         base_to = EI_input_string(STR_BASE, (const char*)"0123456789");
 
-        ConvertBase(str, atoi(base_from), atoi(base_to));
+        if(((int) strlen(str) > 0) && ((int) strlen(base_from) > 0) && ((int) strlen(base_to) > 0))
+        {
+            ConvertBase(str, atoi(base_from), atoi(base_to), &pos);
+        }
 
         free(str);
         free(base_from);
